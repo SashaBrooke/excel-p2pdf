@@ -33,30 +33,7 @@ $excel.Visible = $false
 $excel.DisplayAlerts = $false
 
 # Loop through all Excel files
-Get-ChildItem -Path $excelFolder -Filter *.xlsx | ForEach-Object {
-    $workbookPath = $_.FullName
-    $fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
-    $outputPath = Join-Path $outputFolder "$fileNameWithoutExt.pdf"
-
-    try {
-        # Open workbook
-        $workbook = $excel.Workbooks.Open($workbookPath)
-
-        # Export as PDF (entire workbook)
-        $workbook.ExportAsFixedFormat(
-            [Microsoft.Office.Interop.Excel.XlFixedFormatType]::xlTypePDF,
-            $outputPath
-        )
-
-        # Close workbook
-        $workbook.Close($false)
-        Write-Host "Exported $($_.Name) to PDF"
-    } catch {
-        Write-Warning "Failed to process $($_.Name): $_"
-    }
-}
-
-Get-ChildItem -Path $excelFolder -Filter *.xls | ForEach-Object {
+Get-ChildItem -Path $excelFolder -File | Where-Object { $_.Extension -in '.xls', '.xlsx' } | ForEach-Object {
     $workbookPath = $_.FullName
     $fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
     $outputPath = Join-Path $outputFolder "$fileNameWithoutExt.pdf"
