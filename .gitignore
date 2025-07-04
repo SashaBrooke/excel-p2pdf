@@ -1,0 +1,10 @@
+# Ignore Excel lock files
+~$*
+
+# Ignore contents of input/output folders
+sheets/*
+pdf/*
+
+# Allow keeping empty folders
+!sheets/.gitkeep
+!pdf/.gitkeep
